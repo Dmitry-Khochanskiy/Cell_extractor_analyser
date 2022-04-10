@@ -1,0 +1,10 @@
+*.pt
+*.log
+*.csv
+*.tiff
+*.jpg
+*.pickle
+/__pycache__
+/.ipynb_checkpoints
+console_commands_test.txt
+.ipynb_checkpoints
