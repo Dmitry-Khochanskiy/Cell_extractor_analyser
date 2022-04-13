@@ -15,7 +15,9 @@ import tifffile
 import skimage.io
 import skimage.color
 import skimage.filters
-from cellobj import CellObj, add_measured_value, save_objects_as_pickle
+from modules.cellobj import CellObj, add_measured_value, save_objects_as_pickle
+
+
 
 def thresholder(image, size=1.0, background='black', channel='all'):
     '''thresholds an image with otsu method, filters noise'''

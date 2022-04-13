@@ -10,14 +10,14 @@ import pandas as pd
 import skimage.io
 import skimage.color
 import seaborn as sns
-from cellobj import CellObj, add_measured_value, save_objects_as_pickle
+from modules.cellobj import CellObj, add_measured_value, save_objects_as_pickle
 
 def annotation_text_maker(annotation_text, value_name, cell_obj, scale_metric=""):
     '''prepares a string to annotate a cell'''
     new_annotation = value_name + " : " + str(cell_obj.measured_values[value_name]) + scale_metric
     return (annotation_text + "\n" + new_annotation)
 
-def labeling_image(image,image_hash, cell_obj_list, values_to_write=None):
+def labeling_image(image, image_hash, cell_obj_list, path_to_save, values_to_write=None):
     '''from https://muthu.co/draw-bounding-box-around-contours-skimage/
     Draws a boudning box and contour around cells, label them according to infered class if
     present, writes additional information  '''
@@ -52,9 +52,12 @@ def labeling_image(image,image_hash, cell_obj_list, values_to_write=None):
     ax.imshow(boxed_img, interpolation='nearest', cmap=plt.cm.gray)
     plt.grid(False)
     plt.axis('off')
+    if path_to_save:
+        plt.savefig(fname=f'{path_to_save}{image_hash}_overlay.png', bbox_inches = 'tight')
     plt.show()
-
-def make_montage(cell_list,values_to_write,path_to_save, n_channels):
+    
+#### dif functions accept image image_hash differently
+def make_montage(cell_list, values_to_write, path_to_save, n_channels):
     '''makes a montage of all cells with morphometric information'''
     #finding the largest cell image
     largest_box = [0, 0]
@@ -69,7 +72,7 @@ def make_montage(cell_list,values_to_write,path_to_save, n_channels):
     n_cols = 1
 
     fig, axs = plt.subplots(n_rows, n_cols)
-    fig.set_size_inches(6, len(cell_list)*2)
+    fig.set_size_inches(12, len(cell_list)*2)
 
     for i in range(len(cell_list)):
         # enlarging an image to the largest size
@@ -90,5 +93,5 @@ def make_montage(cell_list,values_to_write,path_to_save, n_channels):
         axs[i].set_yticks([])
         axs[i].imshow(enlarged_image, interpolation='nearest', cmap=plt.cm.gray)
     if path_to_save:
-        plt.savefig(fname=path_to_save, bbox_inches = 'tight')
+        plt.savefig(fname=f'{path_to_save}{str(cell_list[0].original_image_hash)}_monatage.png', bbox_inches = 'tight')
     plt.show()

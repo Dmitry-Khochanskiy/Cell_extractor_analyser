@@ -15,7 +15,8 @@ import skimage.io
 import skimage.color
 import skimage.filters
 from scipy.stats import pearsonr
-from cellobj import CellObj, add_measured_value, save_objects_as_pickle
+from modules.cellobj import CellObj, add_measured_value, save_objects_as_pickle
+
 
 def add_measured_value(cell_obj_list, function, **kwargs):
     '''Adds calculated measurments to every cell object in a list usong functions'''

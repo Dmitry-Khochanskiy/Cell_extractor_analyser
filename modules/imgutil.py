@@ -15,12 +15,13 @@ import tifffile
 import skimage.io
 import skimage.color
 import skimage.filters
-from cellobj import CellObj, add_measured_value, save_objects_as_pickle
+from modules.cellobj import CellObj, add_measured_value, save_objects_as_pickle
+
 
 def image_loader(path):
     '''loads an image, converts it into pil'''
     image = skimage.io.imread(path)
-    return image, hash(tuple(image.tobytes()))
+    return image, str(hash(tuple(image.tobytes())))
 
 def show_image(image, size=(18.5, 10.5), title=""):
     fig, ax = plt.subplots()
@@ -37,10 +38,10 @@ def show_cell_and_mask(cell_obj):
     plt.show()
 
 def save_objects_as_pickle(cell_list, filename):
-    with open(f'cell_lists/{filename}.pickle', 'wb') as handle:
+    with open(f'temp/{filename}.pickle', 'wb') as handle:
         pickle.dump(cell_list, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-def save_objects_as_tiff(cell_list, path, n_channels=3):
+def save_objects_as_tiff(cell_list, name, n_channels=3):
     # finds the biggest bounding box
     largest_box = [0, 0]
     for cell in cell_list:
@@ -66,4 +67,4 @@ def save_objects_as_tiff(cell_list, path, n_channels=3):
         bigger_array[x:x+array.shape[0], y:y+array.shape[1]] = array
         bigger_array = np.expand_dims(bigger_array,0)
         stack = np.concatenate((stack,bigger_array),axis=0)
-    tifffile.imwrite(f'processed_images/{path}.tiff', stack[1:,...], photometric='rgb')
+    tifffile.imwrite(f'results/raw_extraction/{name}.tiff', stack[1:,...], photometric='rgb')

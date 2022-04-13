@@ -2,9 +2,10 @@
 from sklearn.cluster import KMeans
 from sklearn import metrics
 from sklearn.preprocessing import StandardScaler
-from cellobj import CellObj, add_measured_value, save_objects_as_pickle
 import pickle
 import numpy as np
+from modules.cellobj import CellObj, add_measured_value, save_objects_as_pickle
+
 
 def fit_KMeans(data,show_metrics=True):
     '''fitting a clustering algorithm to a traning data'''
