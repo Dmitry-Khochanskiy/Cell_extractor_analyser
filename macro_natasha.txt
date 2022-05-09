@@ -1,0 +1,32 @@
+// Macro Natasha
+function filterThreshold(){
+run("Median...", "radius=2");
+run("Auto Threshold", "method=Otsu");
+}
+
+function ThresholdNMeasure(){
+title = getTitle();
+dir = getDirectory("image");
+
+filterThreshold();
+run("Set Measurements...", "area redirect=None decimal=3");
+run("Measure");
+run("Set Measurements...", "area limit redirect=None decimal=3");
+run("Measure");
+
+selection_area = getResult("Area", 0);
+thresholded_area = getResult("Area", 1);
+ratio = thresholded_area / selection_area;
+
+selectWindow("Results");
+run("Close");
+
+print(title + ", " + selection_area  + ", " + thresholded_area + ", " + ratio);
+
+run("Flatten");
+close(title);
+saveAs("jpeg", dir + "measured" + title);
+}
+
+
+ThresholdNMeasure();

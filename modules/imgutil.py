@@ -37,11 +37,11 @@ def show_cell_and_mask(cell_obj):
     ax2.imshow(cell_obj.images_dict['mask_image'], interpolation='nearest', cmap=plt.cm.gray)
     plt.show()
 
-def save_objects_as_pickle(cell_list, filename):
-    with open(f'temp/{filename}.pickle', 'wb') as handle:
+def save_objects_as_pickle(cell_list, path):
+    with open(f'{path}/cell_objects.pickle', 'wb') as handle:
         pickle.dump(cell_list, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-def save_objects_as_tiff(cell_list, name, n_channels=3):
+def save_objects_as_tiff(cell_list, path, n_channels=3):
     # finds the biggest bounding box
     largest_box = [0, 0]
     for cell in cell_list:
@@ -67,4 +67,4 @@ def save_objects_as_tiff(cell_list, name, n_channels=3):
         bigger_array[x:x+array.shape[0], y:y+array.shape[1]] = array
         bigger_array = np.expand_dims(bigger_array,0)
         stack = np.concatenate((stack,bigger_array),axis=0)
-    tifffile.imwrite(f'results/raw_extraction/{name}.tiff', stack[1:,...], photometric='rgb')
+    tifffile.imwrite(f'{path}/stack.tiff', stack[1:,...], photometric='rgb')

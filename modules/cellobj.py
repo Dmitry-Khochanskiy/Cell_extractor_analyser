@@ -35,6 +35,7 @@ def add_measured_value(cell_obj_list, function, **kwargs):
     return new_cell_obj_list
 
 # Saving CellObj list for on image labeling
-def save_objects_as_pickle(cell_list, filename):
-    with open(f'{filename}.pickle', 'wb') as handle:
+def save_objects_as_pickle(cell_list, filepath):
+    with open(f'{filepath}/cell_obj_list.pickle', 'wb') as handle:
+
         pickle.dump(cell_list, handle, protocol=pickle.HIGHEST_PROTOCOL)

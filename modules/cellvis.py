@@ -53,9 +53,9 @@ def labeling_image(image, image_hash, cell_obj_list, path_to_save, values_to_wri
     plt.grid(False)
     plt.axis('off')
     if path_to_save:
-        plt.savefig(fname=f'{path_to_save}{image_hash}_overlay.png', bbox_inches = 'tight')
+        plt.savefig(fname=f'{path_to_save}/overlay.png', bbox_inches = 'tight')
     plt.show()
-    
+
 #### dif functions accept image image_hash differently
 def make_montage(cell_list, values_to_write, path_to_save, n_channels):
     '''makes a montage of all cells with morphometric information'''
@@ -93,5 +93,5 @@ def make_montage(cell_list, values_to_write, path_to_save, n_channels):
         axs[i].set_yticks([])
         axs[i].imshow(enlarged_image, interpolation='nearest', cmap=plt.cm.gray)
     if path_to_save:
-        plt.savefig(fname=f'{path_to_save}{str(cell_list[0].original_image_hash)}_monatage.png', bbox_inches = 'tight')
+        plt.savefig(fname=f'{path_to_save}/montage.png', bbox_inches = 'tight')
     plt.show()

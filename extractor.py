@@ -12,7 +12,8 @@ def main():
     config = load_config(config_path='config.json')
 # Image loading, cell extraction, primiry filtering and creating a lost of cell objects
     image, image_hash = image_loader(config['image_path'])
-    path_to_save = (r'figures/'+str(image_hash))
+    image_name = config['image_path'].rsplit('.', 1)[0]
+    path_to_save = ('results/' + f'{image_name}')
     show_image(image, "original image")
 # any localisation and thresholding algorithm can be put here
 
@@ -37,7 +38,7 @@ def main():
 
     df = create_df(cell_list)
 
-    df.to_csv(f'results/csvs/{image_hash}.csv', index=False)
+    df.to_csv(f'{path_to_save}/measurments.csv', index=False)
 
 # Model traning if needed and per cell ML measurment
 # Training a model on whole image data set
@@ -45,18 +46,17 @@ def main():
 # per cell model inference
     new_cell_list = add_measured_value(cell_list, calculate_label_KMeans, model=model,
                                    scaler=scaler,  features=config['features_for_ml'])
-    save_objects_as_pickle(cell_list, f'results/cell_lists/{image_hash}')
+    save_objects_as_pickle(cell_list, f'{path_to_save}')
 
 # Plotting features
     columns_list = df.columns
-    df.describe()
-    pair_grid(df, config['columns_for_plotting'], image_hash)
-    heat_map(df, config['columns_for_plotting'], image_hash)
-    correlation_heat_map(df, config['columns_for_plotting'], image_hash)
+    pair_grid(df, config['columns_for_plotting'], path_to_save)
+    heat_map(df, config['columns_for_plotting'], path_to_save)
+    correlation_heat_map(df, config['columns_for_plotting'], path_to_save)
 
 # Visualization on image and cells montage creation
-    labeling_image(image, image_hash, cell_list[::config['show_step']],'results/processed_images/',  config['values_to_show_on_fig'])
-    make_montage(cell_list,config['values_to_show_on_fig'] ,'results/processed_images/', 3)
+    labeling_image(image, image_hash, cell_list[::config['show_step']], path_to_save, config['values_to_show_on_fig'])
+    make_montage(cell_list,config['values_to_show_on_fig'] ,path_to_save, 3)
 
 if __name__ == "__main__":
     main()
